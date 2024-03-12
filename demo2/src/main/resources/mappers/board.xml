@@ -1,0 +1,55 @@
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.ch.board.mapper.BoardMapper">
+
+	<resultMap id="Board" type="com.ch.board.dto.Board">
+		<result property="empNo" column="EMPNO" />
+		<result property="ename" column="ENAME" />
+		<result property="job" column="JOB" />
+		<result property="deptNo" column="DEPTNO" />
+		<result property="projectCode" column="PROJECT_CODE" />
+		<result property="sal" column="SAL" />
+		<result property="comm" column="COMM" />
+	</resultMap>
+	
+	<resultMap id="BoardBoard" type="com.ch.board.dto.BoardBoard">
+		<result property="seq" column="SEQ" />
+		<result property="id" column="ID" />
+		<result property="subject" column="SUBJECT" />
+		<result property="content" column="CONTENT" />
+		<result property="regDate" column="REG_DATE" />
+		<result property="checkDate" column="CHECK_DATE" />
+		<result property="payOption" column="PAYOPTION" />
+		<result property="history" column="HISTORY" />
+		<result property="checkName" column="CHECKNAME" />
+		<result property="delegateCheckName" column="DELEGATECHECKNAME" />
+	</resultMap>
+	
+	
+
+	<select id="BoardList" parameterType="String" resultMap="Board">
+		SELECT EMPNO,ENAME,JOB,DEPTNO,PROJECT_CODE,SAL,COMM
+		FROM EMP
+		WHERE COMM != 0
+	</select>
+	
+	
+	
+	<select id="BoardListList" parameterType="String" resultMap="BoardBoard">
+		SELECT SEQ,
+		ID,
+		SUBJECT,
+		CONTENT,
+		REG_DATE,
+		CHECK_DATE,
+		PAYOPTION,
+		HISTORY,
+		CHECKNAME,
+		DELEGATECHECKNAME
+		FROM BOARD
+	</select>
+	
+
+	
+	
+</mapper>
