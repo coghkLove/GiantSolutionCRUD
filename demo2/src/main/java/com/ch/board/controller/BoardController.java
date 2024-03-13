@@ -1,5 +1,7 @@
 package com.ch.board.controller;
 
+import java.util.List;
+
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -49,6 +51,15 @@ public class BoardController {
 		return "redirect:/board/listlist";
 		
 	}
+	
+	@GetMapping("/view/{seq}")
+	public String BoardSeq(@PathVariable("seq")int seq, Model model) {
+		model.addAttribute("boardview",boardservice.BoardSeq(seq));
+		return "board/boardInsert";
+	}
+	
+	
+
 	
 	
 

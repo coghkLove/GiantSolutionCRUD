@@ -33,8 +33,14 @@ public class BoardServiceImpl implements BoardService {
 	
 	@Override
 	public void BoardDelete(int BoardDelete) {
-		boardmapper.BoardDelete(BoardDelete);;
+		boardmapper.BoardDelete(BoardDelete);
 	}
 	
+	@Override
+	public BoardBoard BoardSeq(int seq){
+		return boardmapper.BoardSeq(seq);
+	}
+	
+
 
 }

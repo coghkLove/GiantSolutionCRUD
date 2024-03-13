@@ -12,15 +12,14 @@
 	<table>
 		<tr>
 			<td>순번</td>
+			<td>이름</td>
 			<td>아이디</td>
 			<td>제목</td>
 			<td>내용</td>
-			<td>등록 날짜</td>
-			<td>확인 날짜</td>
-			<td>결제 옵션</td>
-			<td>이력</td>
-			<td>확인자 이름</td>
-			<td>대리 확인자 이름</td>
+			<td>날짜</td>
+			<td>날짜</td>
+			<td>널</td>
+			<td>널</td>
 			<td>관리</td>
 		</tr>
 			
@@ -30,7 +29,7 @@
 				<td>${boardStudy.seq}</td>
 				<td>${boardStudy.memName}</td>
 				<td>${boardStudy.memId}</td>
-				<td>${boardStudy.boardSubject}</td>
+				<td><a href="/board/view/${boardStudy.seq}">${boardStudy.boardSubject}</a></td>
 				<td>${boardStudy.boardContent}</td>
 				<td>${boardStudy.regDate}</td>
 				<td>${boardStudy.uptDate}</td>

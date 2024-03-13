@@ -35,8 +35,7 @@
 
 
 
-	<select id="BoardListList" parameterType="String"
-		resultMap="BoardBoard">
+	<select id="BoardListList" parameterType="String" resultMap="BoardBoard">
 		SELECT SEQ,
 		MEM_NAME,
 		MEM_ID,
@@ -74,6 +73,15 @@
    <delete id="BoardDelete" parameterType="int">
     	DELETE FROM BOARD_STUDY WHERE SEQ=#{seq}
     </delete>
+    
+    
+   <select id="BoardSeq" parameterType="int" resultMap="BoardBoard">
+   		SELECT MEM_NAME,
+		MEM_ID,
+		BOARD_SUBJECT,
+		BOARD_CONTENT
+		FROM BOARD_STUDY WHERE SEQ=#{seq}
+   </select> 
  
 
 

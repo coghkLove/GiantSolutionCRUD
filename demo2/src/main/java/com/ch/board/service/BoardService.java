@@ -13,5 +13,8 @@ public interface BoardService {
 	void BoardInsert(BoardBoard board);
 	
 	void BoardDelete(int BoardDelete);
+	
+	BoardBoard BoardSeq(int seq);
+
 
 }
