@@ -26,6 +26,15 @@ public class BoardServiceImpl implements BoardService {
 		return boardmapper.BoardListList();
 	}
 	
+	@Override
+	public void BoardInsert(BoardBoard board) {
+		boardmapper.BoardInsert(board);
+	}
+	
+	@Override
+	public void BoardDelete(int BoardDelete) {
+		boardmapper.BoardDelete(BoardDelete);;
+	}
 	
 
 }

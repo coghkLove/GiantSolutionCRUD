@@ -9,5 +9,9 @@ public interface BoardService {
 	List<Board> BoardList();
 	
 	List<BoardBoard> BoardListList();
+	
+	void BoardInsert(BoardBoard board);
+	
+	void BoardDelete(int BoardDelete);
 
 }

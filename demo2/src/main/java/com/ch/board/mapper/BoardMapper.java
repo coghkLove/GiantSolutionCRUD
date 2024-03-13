@@ -12,5 +12,9 @@ public interface BoardMapper {
 	List<Board> BoardList();
 	
 	List<BoardBoard> BoardListList();
+	
+	void BoardInsert(BoardBoard board);
+	
+	void BoardDelete(int BoardDelete);
 
 }

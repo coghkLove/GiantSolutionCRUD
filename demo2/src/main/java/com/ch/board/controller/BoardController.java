@@ -1,13 +1,11 @@
 package com.ch.board.controller;
 
-import java.util.List;
-
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
-import com.ch.board.dto.Board;
 import com.ch.board.dto.BoardBoard;
 import com.ch.board.service.BoardService;
 
@@ -32,6 +30,17 @@ public class BoardController {
 	    return "board/boardListList";
 	}
 
+	@GetMapping("/insert")
+	public String BoardInsert() {
+		return "board/boardInsert";
+	}
+	
+	@PostMapping("/insert")
+	public String BoardPostInsert(BoardBoard board) {
+		boardservice.BoardInsert(board);
+		return "redirect:/board/listlist";
+		
+	}
 	
 	
 

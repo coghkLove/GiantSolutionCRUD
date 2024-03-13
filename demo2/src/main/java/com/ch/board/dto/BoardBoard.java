@@ -8,21 +8,19 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-
 @AllArgsConstructor
 @Builder
 @NoArgsConstructor
 @Data
 public class BoardBoard {
-	 	private int seq;
-	    private String id;
-	    private String subject;
-	    private String content; 
-	    private Date regDate;
-	    private Date checkDate;
-	    private String payOption;
-	    private String history;
-	    private String checkName;
-	    private String delegateCheckName;
+	private int seq;
+	private String memName;
+	private String memId;
+	private String boardSubject;
+	private String boardContent;
+	private Date regDate;
+	private Date uptDate;
+	private String viewCnt;
+	private String useYn;
 
 }
