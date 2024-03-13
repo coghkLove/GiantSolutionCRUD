@@ -21,7 +21,9 @@
 			<td>이력</td>
 			<td>확인자 이름</td>
 			<td>대리 확인자 이름</td>
+			<td>관리</td>
 		</tr>
+			
 
 		<c:forEach var="boardStudy" items="${boardlistlist}">
 			<tr>
@@ -34,6 +36,11 @@
 				<td>${boardStudy.uptDate}</td>
 				<td>${boardStudy.viewCnt}</td>
 				<td>${boardStudy.useYn}</td>
+				<td>
+				<form action="/board/${boardStudy.seq}" method="post">
+					<button type="submit">삭제</button>
+				</form>
+				</td>
 			</tr>
 		</c:forEach>
 	</table>

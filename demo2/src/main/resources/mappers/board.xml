@@ -71,10 +71,10 @@
         )
     </insert>
     
-   <!--  <delete id="BoardDelete" parameterType="int">
+   <delete id="BoardDelete" parameterType="int">
     	DELETE FROM BOARD_STUDY WHERE SEQ=#{seq}
     </delete>
- -->
+ 
 
 
 

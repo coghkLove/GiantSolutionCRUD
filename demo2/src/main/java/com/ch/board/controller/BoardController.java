@@ -3,6 +3,7 @@ package com.ch.board.controller;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
@@ -38,6 +39,13 @@ public class BoardController {
 	@PostMapping("/insert")
 	public String BoardPostInsert(BoardBoard board) {
 		boardservice.BoardInsert(board);
+		return "redirect:/board/listlist";
+		
+	}
+	
+	@PostMapping("/{seq}")
+	public String BoardDelete(@PathVariable("seq")int BoardDelete) {
+		boardservice.BoardDelete(BoardDelete);
 		return "redirect:/board/listlist";
 		
 	}
