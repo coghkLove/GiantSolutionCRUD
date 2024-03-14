@@ -41,6 +41,11 @@ public class BoardServiceImpl implements BoardService {
 		return boardmapper.BoardSeq(seq);
 	}
 	
+	@Override
+	public void UpdateBoard(BoardBoard borad) {
+		boardmapper.UpdateBoard(borad);
+	}
+	
 
 
 }

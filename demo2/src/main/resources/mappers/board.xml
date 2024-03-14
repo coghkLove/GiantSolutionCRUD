@@ -82,6 +82,16 @@
 		BOARD_CONTENT
 		FROM BOARD_STUDY WHERE SEQ=#{seq}
    </select> 
+   
+   <update id="UpdateBoard" parameterType="com.ch.board.dto.BoardBoard">
+   	UPDATE BOARD_STUDY
+	SET 
+	MEM_NAME = #{memName}
+	,MEM_ID = #{memId}
+	,BOARD_SUBJECT = #{boardSubject}
+	,BOARD_CONTENT = #{boardContent}
+	WHERE SEQ= #{seq}
+   </update>
  
 
 

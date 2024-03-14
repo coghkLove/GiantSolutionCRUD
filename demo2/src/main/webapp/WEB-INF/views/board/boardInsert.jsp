@@ -21,11 +21,12 @@
 </head>
 <body>
 	<form name="frm" id="frm">
-		작성자: <input type="text" name="name" id="name" value="${boardview.memName}"><br>
-		아이디: <input type="text" name="id" id="id" value="${boardview.memId}"><br>
-		제목: <input type="text" name="subject" id="subject"
+		작성자: <input type="text" name="memName" id="name" value="${boardview.memName}"><br>
+		아이디: <input type="text" name="memId" id="id" value="${boardview.memId}"><br>
+
+		제목: <input type="text" name="boardSubject" id="subject"
 			value="${boardview.boardSubject}"><br> 내용:<br>
-		<textarea rows="10" cols="40" name="content" id="content">${boardview.boardContent}</textarea>
+		<textarea rows="10" cols="40" name="boardContent" id="content">${boardview.boardContent}</textarea>
 		<br>
 		<c:choose>
 			<c:when test="${empty boardview}">

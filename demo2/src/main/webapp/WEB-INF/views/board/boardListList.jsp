@@ -8,7 +8,7 @@
 <title>Insert title here</title>
 </head>
 <body>
-
+<a href="/board/insert">글쓰기</a> 
 	<table>
 		<tr>
 			<td>순번</td>

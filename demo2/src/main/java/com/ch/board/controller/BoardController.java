@@ -58,7 +58,17 @@ public class BoardController {
 		return "board/boardInsert";
 	}
 	
+//	@GetMapping("/update")
+//	public String UpdateBoard() {
+//		return "board/boardInsert";
+//	}
 	
+	@PostMapping("/update")
+	public String UpdateBoard(BoardBoard board) {
+		boardservice.UpdateBoard(board);
+		return "redirect:/board/listlist";
+	}
+		
 
 	
 	
