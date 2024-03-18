@@ -3,6 +3,7 @@ package com.ch.board.mapper;
 import java.util.List;
 
 import org.apache.ibatis.annotations.Mapper;
+import org.apache.ibatis.annotations.Param;
 
 import com.ch.board.dto.Board;
 import com.ch.board.dto.BoardBoard;
@@ -11,7 +12,7 @@ import com.ch.board.dto.BoardBoard;
 public interface BoardMapper {
 	List<Board> BoardList();
 	
-	List<BoardBoard> BoardListList();
+	List<BoardBoard> BoardListList(@Param("search") String search);
 	
 	void BoardInsert(BoardBoard board);
 	
@@ -20,5 +21,7 @@ public interface BoardMapper {
 	BoardBoard BoardSeq(int seq);
 	
 	void UpdateBoard(BoardBoard borad);
+	
+	
 
 }

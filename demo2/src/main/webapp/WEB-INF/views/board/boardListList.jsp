@@ -8,6 +8,19 @@
 <title>Insert title here</title>
 </head>
 <body>
+
+	<form action="/board/listlist" method="get">
+    <select name="searchType">
+        <option value="all">선택</option>
+        <option value="name">이름</option>
+        <option value="title">제목</option>
+        <option value="titleContent">제목+내용</option>
+    </select>
+    
+    <input type="search" name="search">
+    <button type="submit">검색</button>
+</form>
+
 <a href="/board/insert">글쓰기</a> 
 	<table>
 		<tr>

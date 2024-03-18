@@ -8,7 +8,7 @@ import com.ch.board.dto.BoardBoard;
 public interface BoardService {
 	List<Board> BoardList();
 	
-	List<BoardBoard> BoardListList();
+	List<BoardBoard> BoardListList(String search);
 	
 	void BoardInsert(BoardBoard board);
 	
@@ -17,6 +17,8 @@ public interface BoardService {
 	BoardBoard BoardSeq(int seq);
 	
 	void UpdateBoard(BoardBoard borad);
+	
+	
 
 
 }

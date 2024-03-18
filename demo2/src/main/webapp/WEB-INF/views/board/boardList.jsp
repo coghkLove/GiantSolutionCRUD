@@ -13,6 +13,13 @@
 
 </head>
 <body>
+	<select>
+		<option>선택</option>
+		<option>작성자</option>
+		<option>제목</option>
+		<option>제목+내용</option>
+	</select>
+
 	<table class="table text-center">
 		<tr class="table-primary">
 			<th>번호</th>

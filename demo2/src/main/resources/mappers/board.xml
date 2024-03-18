@@ -34,7 +34,7 @@
 	</select>
 
 
-
+<!-- 
 	<select id="BoardListList" parameterType="String" resultMap="BoardBoard">
 		SELECT SEQ,
 		MEM_NAME,
@@ -47,6 +47,29 @@
 		USEYN
 		FROM BOARD_STUDY
 	</select>
+	-->
+	
+	<select id="BoardListList" parameterType="map" resultMap="BoardBoard">
+    SELECT 
+        SEQ,
+        MEM_NAME,
+        MEM_ID,
+        BOARD_SUBJECT,
+        BOARD_CONTENT,
+        REG_DATE,
+        UPT_DATE,
+        VIEW_CNT,
+        USEYN
+    FROM 
+        BOARD_STUDY
+    <where>
+        <if test="search != null and search != ''">
+            (BOARD_CONTENT LIKE '%' || #{search} || '%' OR 
+             BOARD_SUBJECT LIKE '%' || #{search} || '%')
+        </if>
+    </where>
+    ORDER BY SEQ ASC
+</select>
 	
 	  <insert id="BoardInsert" parameterType="com.ch.board.dto.BoardBoard">
 
@@ -92,6 +115,9 @@
 	,BOARD_CONTENT = #{boardContent}
 	WHERE SEQ= #{seq}
    </update>
+   
+ 
+
  
 
 

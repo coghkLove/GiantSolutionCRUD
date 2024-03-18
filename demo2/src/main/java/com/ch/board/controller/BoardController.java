@@ -1,13 +1,12 @@
 package com.ch.board.controller;
 
-import java.util.List;
-
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import com.ch.board.dto.BoardBoard;
 import com.ch.board.service.BoardService;
@@ -28,8 +27,8 @@ public class BoardController {
 	}
 	
 	@GetMapping("/listlist")
-	public String BoardListList(Model model) {
-	    model.addAttribute("boardlistlist", boardservice.BoardListList());
+	public String BoardListList(@RequestParam(value = "search", required = false) String search, Model model) {
+	    model.addAttribute("boardlistlist", boardservice.BoardListList(search));
 	    return "board/boardListList";
 	}
 
@@ -45,6 +44,7 @@ public class BoardController {
 		
 	}
 	
+	
 	@PostMapping("/{seq}")
 	public String BoardDelete(@PathVariable("seq")int BoardDelete) {
 		boardservice.BoardDelete(BoardDelete);
@@ -58,10 +58,10 @@ public class BoardController {
 		return "board/boardInsert";
 	}
 	
-//	@GetMapping("/update")
-//	public String UpdateBoard() {
-//		return "board/boardInsert";
-//	}
+	@GetMapping("/update")
+	public String UpdateBoard() {
+		return "board/boardInsert";
+	}
 	
 	@PostMapping("/update")
 	public String UpdateBoard(BoardBoard board) {
