@@ -22,8 +22,8 @@ public class BoardServiceImpl implements BoardService {
 	}
 	
 	@Override
-	public List<BoardBoard> BoardListList(String searchType,String search,String stDate){
-	        return boardmapper.BoardListList(searchType,search,stDate);
+	public List<BoardBoard> BoardListList(String searchType,String search,String stDate,String endDate){
+	        return boardmapper.BoardListList(searchType,search,stDate,endDate);
 	}
 	
 	@Override

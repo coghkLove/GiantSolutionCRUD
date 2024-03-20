@@ -85,7 +85,7 @@
 			<if test="stDate != null and stDate != ''">
 			and to_char(reg_date, 'yyyy-MM-dd') between #{stDate} and #{endDate}
 			</if>
-		order by seq desc
+		order by REG_DATE desc
 		</where>
 	</select>
 

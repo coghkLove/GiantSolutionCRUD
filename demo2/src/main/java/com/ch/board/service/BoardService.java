@@ -8,7 +8,7 @@ import com.ch.board.dto.BoardBoard;
 public interface BoardService {
 	List<Board> BoardList();
 	
-	List<BoardBoard> BoardListList(String searchType,String search,String stDate);
+	List<BoardBoard> BoardListList(String searchType,String search,String stDate, String endDate);
 	
 	void BoardInsert(BoardBoard board);
 	
