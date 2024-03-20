@@ -28,8 +28,9 @@ public class BoardController {
 	
 	@GetMapping("/listlist")
 	public String BoardListList( @RequestParam(value = "searchType", required = false) String searchType,
+								@RequestParam(value = "stDate", required = false) String stDate,
 								@RequestParam(value = "search", required = false) String search,Model model) {
-	    model.addAttribute("boardlistlist", boardservice.BoardListList(searchType,search));
+	    model.addAttribute("boardlistlist", boardservice.BoardListList(searchType,search,stDate));
 	    return "board/boardListList";
 	}
 

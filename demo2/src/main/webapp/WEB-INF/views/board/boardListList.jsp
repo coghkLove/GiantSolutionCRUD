@@ -6,6 +6,18 @@
 <head>
 <meta charset="UTF-8">
 <title>Insert title here</title>
+
+<script>
+		$(function(){
+			
+			$("#searchType").val('${paramMap.searchType}');
+			
+			$("#schBtn").click(function(){
+				$("#searchFrm").attr("action","list").attr("method","post").submit();
+			})
+		})
+</script>
+
 </head>
 <body>
 
@@ -19,11 +31,12 @@
     
     <input type="search" name="search">
     <button type="submit">검색</button>
+    <input type = "date" name = "stDate" id = "stDate"> ~ <input type = "date" name = "endDate" id = "endDate">
 </form>
 
 
 <a href="/board/insert">글쓰기</a> 
-	<table>
+	<table border = "1">
 		<tr>
 			<td>순번</td>
 			<td>이름</td>

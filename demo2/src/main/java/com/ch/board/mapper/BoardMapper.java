@@ -12,7 +12,7 @@ import com.ch.board.dto.BoardBoard;
 public interface BoardMapper {
 	List<Board> BoardList();
 	
-	List<BoardBoard> BoardListList(@Param("searchType") String searchType, @Param("search") String search);
+	List<BoardBoard> BoardListList(@Param("searchType") String searchType, @Param("search") String search,@Param("stDate") String stDate);
 	
 	void BoardInsert(BoardBoard board);
 	
