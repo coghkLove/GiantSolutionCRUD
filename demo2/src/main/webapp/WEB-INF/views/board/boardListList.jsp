@@ -21,6 +21,7 @@
     <button type="submit">검색</button>
 </form>
 
+
 <a href="/board/insert">글쓰기</a> 
 	<table>
 		<tr>
@@ -56,6 +57,9 @@
 			</tr>
 		</c:forEach>
 	</table>
+	
+	
+	
 
 </body>
 </html>

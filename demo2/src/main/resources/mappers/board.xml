@@ -23,6 +23,14 @@
 		<result property="viewCnt" column="VIEW_CNT" />
 		<result property="useYn" column="USEYN" />
 	</resultMap>
+	
+	<!--
+	#{} - preperstatement 데이터가져오기
+	String sql = "select * from table where swq= 1 ${}";
+	
+	${}
+	
+	  -->
 
 
 
@@ -34,9 +42,19 @@
 	</select>
 
 
-<!-- 
-	<select id="BoardListList" parameterType="String" resultMap="BoardBoard">
-		SELECT SEQ,
+	<!-- <select id="BoardListList" parameterType="String" resultMap="BoardBoard"> 
+		SELECT SEQ, MEM_NAME, MEM_ID, BOARD_SUBJECT, BOARD_CONTENT, REG_DATE, UPT_DATE, 
+		VIEW_CNT, USEYN FROM BOARD_STUDY </select> <select id="BoardListList" parameterType="map" 
+		resultMap="BoardBoard"> SELECT SEQ, MEM_NAME, MEM_ID, BOARD_SUBJECT, BOARD_CONTENT, 
+		REG_DATE, UPT_DATE, VIEW_CNT, USEYN FROM BOARD_STUDY <where> <if test="search 
+		!= null and search != ''"> (BOARD_CONTENT LIKE '%' || #{search} || '%' OR 
+		BOARD_SUBJECT LIKE '%' || #{search} || '%') </if> </where> </select> -->
+
+
+	<select id="BoardListList" parameterType="map" resultMap="BoardBoard">
+
+		SELECT
+		SEQ,
 		MEM_NAME,
 		MEM_ID,
 		BOARD_SUBJECT,
@@ -45,80 +63,87 @@
 		UPT_DATE,
 		VIEW_CNT,
 		USEYN
-		FROM BOARD_STUDY
+		FROM
+		BOARD_STUDY
+		<!--where 1=1   보통 이걸 먼저 적어주고 시작함   -->
+		<where>
+			<choose>
+				<when test="searchType == 'name'">
+					MEM_NAME LIKE '%' || #{search} || '%'
+				</when>
+				<when test="searchType == 'title'">
+					BOARD_SUBJECT LIKE '%' || #{search} || '%'
+				</when>
+				<when test="searchType == 'titleContent'">
+					(BOARD_SUBJECT LIKE '%' || #{search} || '%' OR BOARD_CONTENT LIKE '%' ||
+					#{search} || '%')
+				</when>
+				<otherwise>
+					1=1
+				</otherwise>
+			</choose>
+		</where>
 	</select>
-	-->
-	
-	<select id="BoardListList" parameterType="map" resultMap="BoardBoard">
-    SELECT 
-        SEQ,
-        MEM_NAME,
-        MEM_ID,
-        BOARD_SUBJECT,
-        BOARD_CONTENT,
-        REG_DATE,
-        UPT_DATE,
-        VIEW_CNT,
-        USEYN
-    FROM 
-        BOARD_STUDY
-    <where>
-        <if test="search != null and search != ''">
-            (BOARD_CONTENT LIKE '%' || #{search} || '%' OR 
-             BOARD_SUBJECT LIKE '%' || #{search} || '%')
-        </if>
-    </where>
-    ORDER BY SEQ ASC
-</select>
-	
-	  <insert id="BoardInsert" parameterType="com.ch.board.dto.BoardBoard">
 
-        <selectKey keyProperty="seq" resultType="int" order="BEFORE">
-            SELECT NVL(MAX(SEQ), 0) + 1 FROM BOARD_STUDY
-        </selectKey>
-        
-        INSERT INTO BOARD_STUDY
-        (SEQ, MEM_NAME, MEM_ID, BOARD_SUBJECT, BOARD_CONTENT, REG_DATE, UPT_DATE, VIEW_CNT, USEYN)
-        VALUES
-        (
-        #{seq},                    
-        #{memName},               
-        #{memId},                  
-        #{boardSubject},           
-        #{boardContent},           
-        SYSTIMESTAMP,                   
-        SYSTIMESTAMP,                  
-        '0',                       
-        'Y'                       
-        )
-    </insert>
-    
-   <delete id="BoardDelete" parameterType="int">
-    	DELETE FROM BOARD_STUDY WHERE SEQ=#{seq}
-    </delete>
-    
-    
-   <select id="BoardSeq" parameterType="int" resultMap="BoardBoard">
-   		SELECT MEM_NAME,
+
+	<insert id="BoardInsert"
+		parameterType="com.ch.board.dto.BoardBoard">
+
+		<selectKey keyProperty="seq" resultType="int" order="BEFORE">
+			SELECT
+			NVL(MAX(SEQ), 0) + 1 FROM BOARD_STUDY
+		</selectKey>
+
+		INSERT INTO BOARD_STUDY
+		(SEQ, MEM_NAME, MEM_ID, BOARD_SUBJECT,
+		BOARD_CONTENT, REG_DATE, UPT_DATE,
+		VIEW_CNT, USEYN)
+		VALUES
+		(
+		#{seq},
+		#{memName},
+		#{memId},
+		#{boardSubject},
+		#{boardContent},
+		SYSTIMESTAMP,
+		SYSTIMESTAMP,
+		'0',
+		'Y'
+		)
+	</insert>
+
+	<delete id="BoardDelete" parameterType="int">
+		DELETE FROM BOARD_STUDY
+		WHERE SEQ=#{seq}
+	</delete>
+
+
+	<select id="BoardSeq" parameterType="int" resultMap="BoardBoard">
+		SELECT
+		MEM_NAME,
 		MEM_ID,
 		BOARD_SUBJECT,
 		BOARD_CONTENT
-		FROM BOARD_STUDY WHERE SEQ=#{seq}
-   </select> 
-   
-   <update id="UpdateBoard" parameterType="com.ch.board.dto.BoardBoard">
-   	UPDATE BOARD_STUDY
-	SET 
-	MEM_NAME = #{memName}
-	,MEM_ID = #{memId}
-	,BOARD_SUBJECT = #{boardSubject}
-	,BOARD_CONTENT = #{boardContent}
-	WHERE SEQ= #{seq}
-   </update>
-   
- 
+		FROM BOARD_STUDY WHERE
+		SEQ=#{seq}
+	</select>
 
- 
+	<update id="UpdateBoard"
+		parameterType="com.ch.board.dto.BoardBoard">
+		UPDATE BOARD_STUDY
+		SET
+		MEM_NAME = #{memName}
+		,MEM_ID =
+		#{memId}
+		,BOARD_SUBJECT = #{boardSubject}
+		,BOARD_CONTENT =
+		#{boardContent}
+		WHERE SEQ= #{seq}
+	</update>
+
+
+
+
 
 
 
