@@ -50,7 +50,7 @@
 		!= null and search != ''"> (BOARD_CONTENT LIKE '%' || #{search} || '%' OR 
 		BOARD_SUBJECT LIKE '%' || #{search} || '%') </if> </where> </select> -->
 
-
+<!--
 	<select id="BoardListList" parameterType="map" resultMap="BoardBoard">
 
 		SELECT
@@ -65,7 +65,6 @@
 		USEYN
 		FROM
 		BOARD_STUDY
-		<!--where 1=1   보통 이걸 먼저 적어주고 시작함   -->
 		<where>
 			<choose>
 				<when test="searchType == 'name'">
@@ -88,6 +87,80 @@
 		order by REG_DATE desc
 		</where>
 	</select>
+	  -->
+	  
+	  
+<select id="BoardListList" parameterType="map" resultMap="BoardBoard">
+    SELECT
+        SEQ,
+        MEM_NAME,
+        MEM_ID,
+        BOARD_SUBJECT,
+        BOARD_CONTENT,
+        REG_DATE,
+        UPT_DATE,
+        VIEW_CNT,
+        USEYN
+    FROM (
+        SELECT
+            ROW_NUMBER() OVER (ORDER BY REG_DATE DESC, SEQ DESC) AS RNUM,
+            SEQ,
+            MEM_NAME,
+            MEM_ID,
+            BOARD_SUBJECT,
+            BOARD_CONTENT,
+            REG_DATE,
+            UPT_DATE,
+            VIEW_CNT,
+            USEYN
+        FROM BOARD_STUDY
+        <where>
+            <choose>
+                <when test="searchType == 'name'">
+                    MEM_NAME LIKE '%' || #{search} || '%'
+                </when>
+                <when test="searchType == 'title'">
+                    BOARD_SUBJECT LIKE '%' || #{search} || '%'
+                </when>
+                <when test="searchType == 'titleContent'">
+                    (BOARD_SUBJECT LIKE '%' || #{search} || '%' OR BOARD_CONTENT LIKE '%' || #{search} || '%')
+                </when>
+                <otherwise>
+                    1=1
+                </otherwise>
+            </choose>
+            <if test="stDate != null and stDate != ''">
+                AND to_char(reg_date, 'yyyy-MM-dd') BETWEEN #{stDate} AND #{endDate}
+            </if>
+        </where>
+    ) where rnum between (#{curPage}-1) * #{listSize} + 1 and #{curPage} * #{listSize}
+</select>
+
+
+<select id="total" parameterType="map" resultType="int">
+    SELECT COUNT(*)
+    FROM BOARD_STUDY
+    <where>
+        <choose>
+            <when test="searchType == 'name'">
+                MEM_NAME LIKE '%' || #{search} || '%'
+            </when>
+            <when test="searchType == 'title'">
+                BOARD_SUBJECT LIKE '%' || #{search} || '%'
+            </when>
+            <when test="searchType == 'titleContent'">
+                (BOARD_SUBJECT LIKE '%' || #{search} || '%' OR BOARD_CONTENT LIKE '%' || #{search} || '%')
+            </when>
+            <otherwise>
+                1=1
+            </otherwise>
+        </choose>
+        <if test="stDate != null and stDate != ''">
+            AND to_char(reg_date, 'yyyy-MM-dd') BETWEEN #{stDate} AND #{endDate}
+        </if>
+    </where>
+</select>
+
 
 
 	<insert id="BoardInsert"

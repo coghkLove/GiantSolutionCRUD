@@ -11,17 +11,20 @@ import com.ch.board.dto.BoardBoard;
 @Mapper
 public interface BoardMapper {
 	List<Board> BoardList();
-	
-	List<BoardBoard> BoardListList(@Param("searchType") String searchType, @Param("search") String search,@Param("stDate") String stDate,  @Param("endDate") String endDate);
-	
+
+	List<BoardBoard> BoardListList(@Param("searchType") String searchType, @Param("search") String search,
+			@Param("stDate") String stDate, @Param("endDate") String endDate, @Param("curPage") int curPage,
+			@Param("listSize") int listSize);
+
+	int total(@Param("searchType") String searchType, @Param("search") String search, @Param("stDate") String stDate,
+			@Param("endDate") String endDate);
+
 	void BoardInsert(BoardBoard board);
-	
+
 	void BoardDelete(int BoardDelete);
-	
+
 	BoardBoard BoardSeq(int seq);
-	
+
 	void UpdateBoard(BoardBoard borad);
-	
-	
 
 }

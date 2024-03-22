@@ -51,7 +51,7 @@
 		</tr>
 			
 
-		<c:forEach var="boardStudy" items="${boardlistlist}">
+		<c:forEach var="boardStudy" items="${boardList}">
 			<tr>
 				<td>${boardStudy.seq}</td>
 				<td>${boardStudy.memName}</td>
@@ -70,8 +70,23 @@
 			</tr>
 		</c:forEach>
 	</table>
-	
-	
+
+	<!-- 페이징 네비게이션 -->
+<div>
+    <c:if test="${!empty paginationInfo}">
+        <a href="/board/listlist?curPage=1">처음</a>
+        <c:if test="${paginationInfo.prevPage > 0}">
+            <a href="/board/listlist?curPage=${paginationInfo.prevPage}">이전</a>
+        </c:if>
+        <c:forEach begin="${paginationInfo.blockBegin}" end="${paginationInfo.blockEnd}" var="pageNum">
+            <a href="/board/listlist?curPage=${pageNum}">${pageNum}</a>
+        </c:forEach>
+        <c:if test="${paginationInfo.nextPage <= paginationInfo.totalPage}">
+            <a href="/board/listlist?curPage=${paginationInfo.nextPage}">다음</a>
+        </c:if>
+        <a href="/board/listlist?curPage=${paginationInfo.totalPage}">마지막</a>
+    </c:if>
+</div>
 	
 
 </body>
