@@ -2,15 +2,6 @@
 
 <mapper namespace="com.ch.board.mapper.BoardMapper">
 
-	<resultMap id="Board" type="com.ch.board.dto.Board">
-		<result property="empNo" column="EMPNO" />
-		<result property="ename" column="ENAME" />
-		<result property="job" column="JOB" />
-		<result property="deptNo" column="DEPTNO" />
-		<result property="projectCode" column="PROJECT_CODE" />
-		<result property="sal" column="SAL" />
-		<result property="comm" column="COMM" />
-	</resultMap>
 
 	<resultMap id="BoardBoard" type="com.ch.board.dto.BoardBoard">
 		<result property="seq" column="SEQ" />
@@ -24,6 +15,30 @@
 		<result property="useYn" column="USEYN" />
 	</resultMap>
 	
+	
+	
+	<!--<sql> 태그의 id를 <include> 태그의 refid 속성에 지정하여 쿼리에 포함시킴  -->
+	<sql id="searchSql">
+  		<choose>
+				<when test="searchType == 'name'">
+					and mem_name like '%'||#{searchTxt}||'%'
+				</when>
+				<when test="searchType == 'subject'">
+					and board_subject like '%'||#{searchTxt}||'%'
+				</when>
+				<when test="searchType == 'subCont'">
+					and (
+						 board_subject like '%'||#{searchTxt}||'%' 
+						 or board_content like '%'||#{searchTxt}||'%'
+						)
+					
+				</when>
+			</choose>
+			<if test="stDate != null and stDate != ''">
+				and to_char(reg_date, 'yyyy-MM-dd') between #{stDate} and #{endDate}
+			</if>
+  	</sql>
+	
 	<!--
 	#{} - preperstatement 데이터가져오기
 	String sql = "select * from table where swq= 1 ${}";
@@ -31,135 +46,43 @@
 	${}
 	
 	  -->
-
-
-
-	<select id="BoardList" parameterType="String" resultMap="Board">
-		SELECT
-		EMPNO,ENAME,JOB,DEPTNO,PROJECT_CODE,SAL,COMM
-		FROM EMP
-		WHERE COMM != 0
-	</select>
-
-
-	<!-- <select id="BoardListList" parameterType="String" resultMap="BoardBoard"> 
-		SELECT SEQ, MEM_NAME, MEM_ID, BOARD_SUBJECT, BOARD_CONTENT, REG_DATE, UPT_DATE, 
-		VIEW_CNT, USEYN FROM BOARD_STUDY </select> <select id="BoardListList" parameterType="map" 
-		resultMap="BoardBoard"> SELECT SEQ, MEM_NAME, MEM_ID, BOARD_SUBJECT, BOARD_CONTENT, 
-		REG_DATE, UPT_DATE, VIEW_CNT, USEYN FROM BOARD_STUDY <where> <if test="search 
-		!= null and search != ''"> (BOARD_CONTENT LIKE '%' || #{search} || '%' OR 
-		BOARD_SUBJECT LIKE '%' || #{search} || '%') </if> </where> </select> -->
-
-<!--
-	<select id="BoardListList" parameterType="map" resultMap="BoardBoard">
-
-		SELECT
-		SEQ,
-		MEM_NAME,
-		MEM_ID,
-		BOARD_SUBJECT,
-		BOARD_CONTENT,
-		REG_DATE,
-		UPT_DATE,
-		VIEW_CNT,
-		USEYN
-		FROM
-		BOARD_STUDY
-		<where>
-			<choose>
-				<when test="searchType == 'name'">
-					MEM_NAME LIKE '%' || #{search} || '%'
-				</when>
-				<when test="searchType == 'title'">
-					BOARD_SUBJECT LIKE '%' || #{search} || '%'
-				</when>
-				<when test="searchType == 'titleContent'">
-					(BOARD_SUBJECT LIKE '%' || #{search} || '%' OR BOARD_CONTENT LIKE '%' ||
-					#{search} || '%')
-				</when>
-				<otherwise>
-					1=1
-				</otherwise>
-			</choose>
-			<if test="stDate != null and stDate != ''">
-			and to_char(reg_date, 'yyyy-MM-dd') between #{stDate} and #{endDate}
-			</if>
-		order by REG_DATE desc
-		</where>
-	</select>
-	  -->
 	  
-	  
-<select id="BoardListList" parameterType="map" resultMap="BoardBoard">
-    SELECT
-        SEQ,
-        MEM_NAME,
-        MEM_ID,
-        BOARD_SUBJECT,
-        BOARD_CONTENT,
-        REG_DATE,
-        UPT_DATE,
-        VIEW_CNT,
-        USEYN
-    FROM (
-        SELECT
-            ROW_NUMBER() OVER (ORDER BY REG_DATE DESC, SEQ DESC) AS RNUM,
-            SEQ,
-            MEM_NAME,
-            MEM_ID,
-            BOARD_SUBJECT,
-            BOARD_CONTENT,
-            REG_DATE,
-            UPT_DATE,
-            VIEW_CNT,
-            USEYN
-        FROM BOARD_STUDY
-        <where>
-            <choose>
-                <when test="searchType == 'name'">
-                    MEM_NAME LIKE '%' || #{search} || '%'
-                </when>
-                <when test="searchType == 'title'">
-                    BOARD_SUBJECT LIKE '%' || #{search} || '%'
-                </when>
-                <when test="searchType == 'titleContent'">
-                    (BOARD_SUBJECT LIKE '%' || #{search} || '%' OR BOARD_CONTENT LIKE '%' || #{search} || '%')
-                </when>
-                <otherwise>
-                    1=1
-                </otherwise>
-            </choose>
-            <if test="stDate != null and stDate != ''">
-                AND to_char(reg_date, 'yyyy-MM-dd') BETWEEN #{stDate} AND #{endDate}
-            </if>
-        </where>
-    ) where rnum between (#{curPage}-1) * #{listSize} + 1 and #{curPage} * #{listSize}
-</select>
-
-
-<select id="total" parameterType="map" resultType="int">
-    SELECT COUNT(*)
-    FROM BOARD_STUDY
-    <where>
-        <choose>
-            <when test="searchType == 'name'">
-                MEM_NAME LIKE '%' || #{search} || '%'
-            </when>
-            <when test="searchType == 'title'">
-                BOARD_SUBJECT LIKE '%' || #{search} || '%'
-            </when>
-            <when test="searchType == 'titleContent'">
-                (BOARD_SUBJECT LIKE '%' || #{search} || '%' OR BOARD_CONTENT LIKE '%' || #{search} || '%')
-            </when>
-            <otherwise>
-                1=1
-            </otherwise>
-        </choose>
-        <if test="stDate != null and stDate != ''">
-            AND to_char(reg_date, 'yyyy-MM-dd') BETWEEN #{stDate} AND #{endDate}
-        </if>
-    </where>
-</select>
+		<select id="BoardListList" parameterType="map" resultMap="BoardBoard">
+		    SELECT
+		        SEQ,
+		        MEM_NAME,
+		        MEM_ID,
+		        BOARD_SUBJECT,
+		        BOARD_CONTENT,
+		        REG_DATE,
+		        UPT_DATE,
+		        VIEW_CNT,
+		        USEYN
+		    FROM (
+		        SELECT
+		            ROW_NUMBER() OVER (ORDER BY REG_DATE DESC, SEQ DESC) AS RNUM,
+		            SEQ,
+		            MEM_NAME,
+		            MEM_ID,
+		            BOARD_SUBJECT,
+		            BOARD_CONTENT,
+		            REG_DATE,
+		            UPT_DATE,
+		            VIEW_CNT,
+		            USEYN
+		        FROM BOARD_STUDY
+		        where 1=1
+		        <include refid="searchSql"></include>
+		       
+		    ) where rnum between (#{curPage}-1) * #{listSize} + 1 and #{curPage} * #{listSize}
+		</select>
+		
+		
+		<select id="total" parameterType="map" resultType="int">
+		    SELECT COUNT(seq) FROM BOARD_STUDY
+		    where 1=1
+		    <include refid="searchSql"></include>
+		</select>
 
 
 

@@ -23,11 +23,7 @@ public class BoardController {
 	
 	private final BoardService boardservice;
 	
-	@GetMapping("/list")
-	public String BoardList(Model model) {
-		model.addAttribute("boardlist", boardservice.BoardList());
-		return "board/boardList";
-	}
+
 	
 	@GetMapping("/listlist")
 	public String boardListList(@RequestParam(value = "searchType", required = false, defaultValue = "") String searchType,

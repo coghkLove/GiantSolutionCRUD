@@ -5,12 +5,12 @@ import java.util.List;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 
-import com.ch.board.dto.Board;
+
 import com.ch.board.dto.BoardBoard;
 
 @Mapper
 public interface BoardMapper {
-	List<Board> BoardList();
+
 
 	List<BoardBoard> BoardListList(@Param("searchType") String searchType, @Param("search") String search,
 			@Param("stDate") String stDate, @Param("endDate") String endDate, @Param("curPage") int curPage,

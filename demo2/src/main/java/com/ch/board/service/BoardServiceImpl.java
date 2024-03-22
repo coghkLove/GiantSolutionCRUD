@@ -6,7 +6,7 @@ import java.util.Map;
 
 import org.springframework.stereotype.Service;
 
-import com.ch.board.dto.Board;
+
 import com.ch.board.dto.BoardBoard;
 import com.ch.board.mapper.BoardMapper;
 
@@ -18,10 +18,7 @@ public class BoardServiceImpl implements BoardService {
 
 	private final BoardMapper boardmapper;
 
-	@Override
-	public List<Board> BoardList() {
-		return boardmapper.BoardList();
-	}
+	
 
 	@Override
 	public List<BoardBoard> getBoardList(String searchType, String search, String stDate, String endDate, int curPage,
