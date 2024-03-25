@@ -26,5 +26,9 @@ public interface BoardMapper {
 	BoardBoard BoardSeq(int seq);
 
 	void UpdateBoard(BoardBoard borad);
+	
+	List<BoardBoard> BoardList(@Param("searchType") String searchType, @Param("search") String search,
+			@Param("stDate") String stDate, @Param("endDate") String endDate, @Param("startRow") int startRow, 
+		    @Param("endRow") int endRow);
 
 }

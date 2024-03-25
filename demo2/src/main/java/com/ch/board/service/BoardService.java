@@ -9,8 +9,7 @@ import com.ch.board.dto.BoardBoard;
 public interface BoardService {
 
 
-	List<BoardBoard> getBoardList(String searchType, String search, String stDate, String endDate, int curPage,
-			int listSize);
+	List<BoardBoard> getBoardList(String searchType, String search, String stDate, String endDate, int curPage,	int listSize);
 
 	int getBoardListTotalCount(String searchType, String search, String stDate, String endDate);
 
@@ -23,5 +22,7 @@ public interface BoardService {
 	BoardBoard BoardSeq(int seq);
 
 	void UpdateBoard(BoardBoard borad);
+	
+	List<BoardBoard> BoardList(String searchType, String search, String stDate, String endDate, int curPage, int listSize);
 
 }

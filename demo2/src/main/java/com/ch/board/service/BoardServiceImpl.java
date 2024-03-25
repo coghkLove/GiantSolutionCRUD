@@ -5,7 +5,7 @@ import java.util.List;
 import java.util.Map;
 
 import org.springframework.stereotype.Service;
-
+import org.springframework.transaction.annotation.Transactional;
 
 import com.ch.board.dto.BoardBoard;
 import com.ch.board.mapper.BoardMapper;
@@ -21,8 +21,7 @@ public class BoardServiceImpl implements BoardService {
 	
 
 	@Override
-	public List<BoardBoard> getBoardList(String searchType, String search, String stDate, String endDate, int curPage,
-			int listSize) {
+	public List<BoardBoard> getBoardList(String searchType, String search, String stDate, String endDate, int curPage,			int listSize) {
 		int startRow = (curPage - 1) * listSize;
 		return boardmapper.BoardListList(searchType, search, stDate, endDate, startRow, listSize);
 	}
@@ -31,7 +30,8 @@ public class BoardServiceImpl implements BoardService {
 	public int getBoardListTotalCount(String searchType, String search, String stDate, String endDate) {
 		return boardmapper.total(searchType, search, stDate, endDate);
 	}
-
+	
+	@Transactional
 	@Override
 	public Map<String, Object> getPaginationInfo(int curPage, int listSize, int totalCount) {
 	    Map<String, Object> paginationInfo = new HashMap<>();
@@ -87,4 +87,11 @@ public class BoardServiceImpl implements BoardService {
 		boardmapper.UpdateBoard(borad);
 	}
 
+	
+	@Override
+	public List<BoardBoard> BoardList(String searchType, String search, String stDate, String endDate, int curPage, int listSize) {
+	    int startRow = (curPage - 1) * listSize + 1;
+	    int endRow = curPage * listSize;
+		return boardmapper.BoardList(searchType, search, stDate, endDate, startRow, endRow);
+	}
 }

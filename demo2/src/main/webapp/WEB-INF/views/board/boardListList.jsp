@@ -75,7 +75,7 @@
 <div>
     <c:if test="${!empty paginationInfo}">
         <a href="/board/listlist?curPage=1">처음</a>
-        <c:if test="${paginationInfo.prevPage > 0}">
+        <c:if test="${paginationInfo.prevPage > 1}">
             <a href="/board/listlist?curPage=${paginationInfo.prevPage}">이전</a>
         </c:if>
         <c:forEach begin="${paginationInfo.blockBegin}" end="${paginationInfo.blockEnd}" var="pageNum">

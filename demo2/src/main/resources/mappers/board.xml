@@ -14,75 +14,102 @@
 		<result property="viewCnt" column="VIEW_CNT" />
 		<result property="useYn" column="USEYN" />
 	</resultMap>
-	
-	
-	
-	<!--<sql> 태그의 id를 <include> 태그의 refid 속성에 지정하여 쿼리에 포함시킴  -->
+
+
+
+	<!--<sql> 태그의 id를 <include> 태그의 refid 속성에 지정하여 쿼리에 포함시킴 -->
 	<sql id="searchSql">
-  		<choose>
-				<when test="searchType == 'name'">
-					and mem_name like '%'||#{searchTxt}||'%'
-				</when>
-				<when test="searchType == 'subject'">
-					and board_subject like '%'||#{searchTxt}||'%'
-				</when>
-				<when test="searchType == 'subCont'">
-					and (
-						 board_subject like '%'||#{searchTxt}||'%' 
-						 or board_content like '%'||#{searchTxt}||'%'
-						)
-					
-				</when>
-			</choose>
-			<if test="stDate != null and stDate != ''">
-				and to_char(reg_date, 'yyyy-MM-dd') between #{stDate} and #{endDate}
-			</if>
-  	</sql>
-	
-	<!--
-	#{} - preperstatement 데이터가져오기
-	String sql = "select * from table where swq= 1 ${}";
-	
-	${}
-	
-	  -->
-	  
-		<select id="BoardListList" parameterType="map" resultMap="BoardBoard">
-		    SELECT
-		        SEQ,
-		        MEM_NAME,
-		        MEM_ID,
-		        BOARD_SUBJECT,
-		        BOARD_CONTENT,
-		        REG_DATE,
-		        UPT_DATE,
-		        VIEW_CNT,
-		        USEYN
-		    FROM (
-		        SELECT
-		            ROW_NUMBER() OVER (ORDER BY REG_DATE DESC, SEQ DESC) AS RNUM,
-		            SEQ,
-		            MEM_NAME,
-		            MEM_ID,
-		            BOARD_SUBJECT,
-		            BOARD_CONTENT,
-		            REG_DATE,
-		            UPT_DATE,
-		            VIEW_CNT,
-		            USEYN
-		        FROM BOARD_STUDY
-		        where 1=1
-		        <include refid="searchSql"></include>
-		       
-		    ) where rnum between (#{curPage}-1) * #{listSize} + 1 and #{curPage} * #{listSize}
-		</select>
-		
-		
-		<select id="total" parameterType="map" resultType="int">
-		    SELECT COUNT(seq) FROM BOARD_STUDY
-		    where 1=1
-		    <include refid="searchSql"></include>
-		</select>
+		<choose>
+			<when test="searchType == 'all'">
+			</when>
+			<when test="searchType == 'name'">
+				and mem_name like '%'||#{search}||'%'
+			</when>
+			<when test="searchType == 'title'">
+				and board_subject like '%'||#{search}||'%'
+			</when>
+			<when test="searchType == 'titleContent'">
+				and (
+				board_subject like '%'||#{search}||'%'
+				or board_content like '%'||#{search}||'%'
+				)
+			</when>
+		</choose>
+		<if test="stDate != null and stDate != ''">
+			and to_char(reg_date, 'yyyy-MM-dd') between #{stDate} and #{endDate}
+		</if>
+	</sql>
+
+	<!-- #{} - preperstatement 데이터가져오기 String sql = "select * from table where 
+		swq= 1 ${}"; ${} -->
+
+	<select id="BoardList" parameterType="Map"
+		resultMap="BoardBoard">
+		SELECT
+		SEQ,
+		MEM_NAME,
+		MEM_ID,
+		BOARD_SUBJECT,
+		BOARD_CONTENT,
+		REG_DATE,
+		UPT_DATE,
+		VIEW_CNT,
+		USEYN
+		FROM (
+		SELECT
+		ROW_NUMBER() OVER (ORDER BY REG_DATE DESC, SEQ DESC) AS RNUM,
+		SEQ,
+		MEM_NAME,
+		MEM_ID,
+		BOARD_SUBJECT,
+		BOARD_CONTENT,
+		REG_DATE,
+		UPT_DATE,
+		VIEW_CNT,
+		USEYN
+		FROM BOARD_STUDY
+		WHERE 1=1
+		<include refid="searchSql" />
+		) WHERE RNUM BETWEEN #{startRow} AND #{endRow}
+	</select>
+
+
+	<select id="BoardListList" parameterType="map"
+		resultMap="BoardBoard">
+		SELECT
+		SEQ,
+		MEM_NAME,
+		MEM_ID,
+		BOARD_SUBJECT,
+		BOARD_CONTENT,
+		REG_DATE,
+		UPT_DATE,
+		VIEW_CNT,
+		USEYN
+		FROM (
+		SELECT
+		ROW_NUMBER() OVER (ORDER BY REG_DATE DESC, SEQ DESC) AS RNUM,
+		SEQ,
+		MEM_NAME,
+		MEM_ID,
+		BOARD_SUBJECT,
+		BOARD_CONTENT,
+		REG_DATE,
+		UPT_DATE,
+		VIEW_CNT,
+		USEYN
+		FROM BOARD_STUDY
+		where 1=1
+		<include refid="searchSql"></include>
+		) where rnum between (#{curPage}-1) * #{listSize} + 1 and #{curPage} * #{listSize}
+	</select>
+
+
+	<select id="total" parameterType="map" resultType="int">
+		SELECT COUNT(seq) FROM BOARD_STUDY
+		where 1=1
+		<include refid="searchSql"></include>
+	</select>
 
 
 

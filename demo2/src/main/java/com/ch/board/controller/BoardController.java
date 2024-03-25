@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.Map;
 
 import org.springframework.stereotype.Controller;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -24,7 +25,7 @@ public class BoardController {
 	private final BoardService boardservice;
 	
 
-	
+	@Transactional
 	@GetMapping("/listlist")
 	public String boardListList(@RequestParam(value = "searchType", required = false, defaultValue = "") String searchType,
 	                            @RequestParam(value = "search", required = false, defaultValue = "") String search,
@@ -96,6 +97,32 @@ public class BoardController {
 	public String UpdateBoard(BoardBoard board) {
 		boardservice.UpdateBoard(board);
 		return "redirect:/board/listlist";
+	}
+	
+	@GetMapping("/list")
+	public String boardList(
+	        @RequestParam(value = "searchType", required = false, defaultValue = "all") String searchType,
+	        @RequestParam(value = "search", required = false, defaultValue = "") String search,
+	        @RequestParam(value = "stDate", required = false, defaultValue = "") String stDate,
+	        @RequestParam(value = "endDate", required = false, defaultValue = "") String endDate,
+	        @RequestParam(value = "curPage", required = false, defaultValue = "1") int curPage,
+	        @RequestParam(value = "listSize", required = false, defaultValue = "10") int listSize,
+	        Model model) {
+	    
+	    // 전체 게시물 수 조회
+	    int totalCount = boardservice.getBoardListTotalCount(searchType, search, stDate, endDate);
+	    
+	    // 페이징 처리를 위한 정보 계산
+	    Map<String, Object> paginationInfo = boardservice.getPaginationInfo(curPage, listSize, totalCount);
+	    
+	    // 페이징 처리된 게시물 목록 조회
+	    List<BoardBoard> boardList = boardservice.BoardList(searchType, search, stDate, endDate, curPage, listSize);
+	    
+	    // 모델에 추가
+	    model.addAttribute("boardList", boardList);
+	    model.addAttribute("paginationInfo", paginationInfo);
+	    
+	    return "board/boardList";
 	}
 		
 
