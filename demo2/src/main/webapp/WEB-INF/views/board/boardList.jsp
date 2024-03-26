@@ -25,8 +25,8 @@
     <select name="searchType">
         <option value="all">선택</option>
         <option value="name">이름</option>
-        <option value="subject">제목</option>
-        <option value="subCont">제목+내용</option>
+        <option value="title">제목</option>
+        <option value="titleContent">제목+내용</option>
     </select>
     
     <input type="search" name="search">

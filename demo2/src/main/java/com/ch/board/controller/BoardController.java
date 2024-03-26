@@ -26,39 +26,22 @@ public class BoardController {
 	
 
 	@Transactional
-	@GetMapping("/listlist")
-	public String boardListList(@RequestParam(value = "searchType", required = false, defaultValue = "") String searchType,
-	                            @RequestParam(value = "search", required = false, defaultValue = "") String search,
-	                            @RequestParam(value = "stDate", required = false, defaultValue = "") String stDate,
-	                            @RequestParam(value = "endDate", required = false, defaultValue = "") String endDate,
-	                            @RequestParam(value = "curPage", required = false, defaultValue = "1") int curPage,
-	                            @RequestParam(value = "listSize", required = false, defaultValue = "10") int listSize,
-	                            Model model) {
-	    
-	    System.out.println("Search Type: " + searchType);
-	    System.out.println("Search: " + search);
-	    System.out.println("Start Date: " + stDate);
-	    System.out.println("End Date: " + endDate);
-	    System.out.println("Current Page: " + curPage);
-	    System.out.println("List Size: " + listSize);
-	    
-	    List<BoardBoard> boardList = boardservice.getBoardList(searchType, search, stDate, endDate, curPage, listSize);
-	    for (BoardBoard board : boardList) {
-	        System.out.println("Seq: " + board.getSeq() + ", Name: " + board.getMemName() + 
-	                           ", Title: " + board.getBoardSubject() + ", Date: " + board.getRegDate());
-	    }
+	@GetMapping("/list")
+	public String boardList(
+	        @RequestParam(value = "searchType", required = false, defaultValue = "") String searchType,
+	        @RequestParam(value = "search", required = false, defaultValue = "") String search,
+	        @RequestParam(value = "stDate", required = false, defaultValue = "") String stDate,
+	        @RequestParam(value = "endDate", required = false, defaultValue = "") String endDate,
+	        @RequestParam(value = "curPage", required = false, defaultValue = "1") int curPage,
+	        @RequestParam(value = "listSize", required = false, defaultValue = "10") int listSize,
+	        Model model) {
 	    
 	    int totalCount = boardservice.getBoardListTotalCount(searchType, search, stDate, endDate);
-	    System.out.println("Total Count: " + totalCount);
-	    
 	    Map<String, Object> paginationInfo = boardservice.getPaginationInfo(curPage, listSize, totalCount);
-	    System.out.println("Pagination Info: " + paginationInfo);
-	    
+	    List<BoardBoard> boardList = boardservice.BoardList(searchType, search, stDate, endDate, curPage, listSize);
 	    model.addAttribute("boardList", boardList);
-	    model.addAttribute("totalCount", totalCount);
 	    model.addAttribute("paginationInfo", paginationInfo);
-	    
-	    return "board/boardListList";
+	    return "board/boardList";
 	}
 
 
@@ -99,31 +82,7 @@ public class BoardController {
 		return "redirect:/board/listlist";
 	}
 	
-	@GetMapping("/list")
-	public String boardList(
-	        @RequestParam(value = "searchType", required = false, defaultValue = "all") String searchType,
-	        @RequestParam(value = "search", required = false, defaultValue = "") String search,
-	        @RequestParam(value = "stDate", required = false, defaultValue = "") String stDate,
-	        @RequestParam(value = "endDate", required = false, defaultValue = "") String endDate,
-	        @RequestParam(value = "curPage", required = false, defaultValue = "1") int curPage,
-	        @RequestParam(value = "listSize", required = false, defaultValue = "10") int listSize,
-	        Model model) {
-	    
-	    // 전체 게시물 수 조회
-	    int totalCount = boardservice.getBoardListTotalCount(searchType, search, stDate, endDate);
-	    
-	    // 페이징 처리를 위한 정보 계산
-	    Map<String, Object> paginationInfo = boardservice.getPaginationInfo(curPage, listSize, totalCount);
-	    
-	    // 페이징 처리된 게시물 목록 조회
-	    List<BoardBoard> boardList = boardservice.BoardList(searchType, search, stDate, endDate, curPage, listSize);
-	    
-	    // 모델에 추가
-	    model.addAttribute("boardList", boardList);
-	    model.addAttribute("paginationInfo", paginationInfo);
-	    
-	    return "board/boardList";
-	}
+
 		
 
 	

@@ -19,12 +19,13 @@ public class BoardServiceImpl implements BoardService {
 	private final BoardMapper boardmapper;
 
 	
-
 	@Override
-	public List<BoardBoard> getBoardList(String searchType, String search, String stDate, String endDate, int curPage,			int listSize) {
-		int startRow = (curPage - 1) * listSize;
-		return boardmapper.BoardListList(searchType, search, stDate, endDate, startRow, listSize);
+	public List<BoardBoard> BoardList(String searchType, String search, String stDate, String endDate, int curPage, int listSize) {
+	    int startRow = (curPage - 1) * listSize + 1;
+	    int endRow = curPage * listSize;
+		return boardmapper.BoardList(searchType, search, stDate, endDate, startRow, endRow);
 	}
+
 
 	@Override
 	public int getBoardListTotalCount(String searchType, String search, String stDate, String endDate) {
@@ -88,10 +89,5 @@ public class BoardServiceImpl implements BoardService {
 	}
 
 	
-	@Override
-	public List<BoardBoard> BoardList(String searchType, String search, String stDate, String endDate, int curPage, int listSize) {
-	    int startRow = (curPage - 1) * listSize + 1;
-	    int endRow = curPage * listSize;
-		return boardmapper.BoardList(searchType, search, stDate, endDate, startRow, endRow);
-	}
+	
 }

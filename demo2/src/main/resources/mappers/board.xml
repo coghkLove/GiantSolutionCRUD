@@ -26,12 +26,12 @@
 				and mem_name like '%'||#{search}||'%'
 			</when>
 			<when test="searchType == 'title'">
-				and board_subject like '%'||#{search}||'%'
+				and BOARD_SUBJECT like '%'||#{search}||'%'
 			</when>
 			<when test="searchType == 'titleContent'">
 				and (
-				board_subject like '%'||#{search}||'%'
-				or board_content like '%'||#{search}||'%'
+				BOARD_SUBJECT like '%'||#{search}||'%'
+				or BOARD_CONTENT like '%'||#{search}||'%'
 				)
 			</when>
 		</choose>
@@ -71,37 +71,6 @@
 		WHERE 1=1
 		<include refid="searchSql" />
 		) WHERE RNUM BETWEEN #{startRow} AND #{endRow}
-	</select>
-
-
-	<select id="BoardListList" parameterType="map"
-		resultMap="BoardBoard">
-		SELECT
-		SEQ,
-		MEM_NAME,
-		MEM_ID,
-		BOARD_SUBJECT,
-		BOARD_CONTENT,
-		REG_DATE,
-		UPT_DATE,
-		VIEW_CNT,
-		USEYN
-		FROM (
-		SELECT
-		ROW_NUMBER() OVER (ORDER BY REG_DATE DESC, SEQ DESC) AS RNUM,
-		SEQ,
-		MEM_NAME,
-		MEM_ID,
-		BOARD_SUBJECT,
-		BOARD_CONTENT,
-		REG_DATE,
-		UPT_DATE,
-		VIEW_CNT,
-		USEYN
-		FROM BOARD_STUDY
-		where 1=1
-		<include refid="searchSql"></include>
-		) where rnum between (#{curPage}-1) * #{listSize} + 1 and #{curPage} * #{listSize}
 	</select>
 
 

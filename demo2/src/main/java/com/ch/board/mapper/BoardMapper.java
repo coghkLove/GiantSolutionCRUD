@@ -10,11 +10,10 @@ import com.ch.board.dto.BoardBoard;
 
 @Mapper
 public interface BoardMapper {
-
-
-	List<BoardBoard> BoardListList(@Param("searchType") String searchType, @Param("search") String search,
-			@Param("stDate") String stDate, @Param("endDate") String endDate, @Param("curPage") int curPage,
-			@Param("listSize") int listSize);
+	
+	List<BoardBoard> BoardList(@Param("searchType") String searchType, @Param("search") String search,
+			@Param("stDate") String stDate, @Param("endDate") String endDate, @Param("startRow") int startRow, 
+		    @Param("endRow") int endRow);
 
 	int total(@Param("searchType") String searchType, @Param("search") String search, @Param("stDate") String stDate,
 			@Param("endDate") String endDate);
@@ -27,8 +26,5 @@ public interface BoardMapper {
 
 	void UpdateBoard(BoardBoard borad);
 	
-	List<BoardBoard> BoardList(@Param("searchType") String searchType, @Param("search") String search,
-			@Param("stDate") String stDate, @Param("endDate") String endDate, @Param("startRow") int startRow, 
-		    @Param("endRow") int endRow);
 
 }
