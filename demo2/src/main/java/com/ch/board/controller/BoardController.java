@@ -24,8 +24,6 @@ public class BoardController {
 	
 	private final BoardService boardservice;
 	
-
-	@Transactional
 	@GetMapping("/list")
 	public String boardList(
 	        @RequestParam(value = "searchType", required = false, defaultValue = "") String searchType,
@@ -43,6 +41,29 @@ public class BoardController {
 	    model.addAttribute("paginationInfo", paginationInfo);
 	    return "board/boardList";
 	}
+	
+	@GetMapping("/searchList")
+	public String searchList(
+	    @RequestParam(value = "searchType", required = false, defaultValue = "") String searchType,
+	    @RequestParam(value = "search", required = false, defaultValue = "") String search,
+	    @RequestParam(value = "stDate", required = false, defaultValue = "") String stDate,
+	    @RequestParam(value = "endDate", required = false, defaultValue = "") String endDate,
+	    @RequestParam(value = "curPage", required = false, defaultValue = "1") int curPage,
+	    @RequestParam(value = "listSize", required = false, defaultValue = "10") int listSize,
+	    Model model) {
+
+	    int totalCount = boardservice.getBoardListTotalCount(searchType, search, stDate, endDate); // 총 결과 수 계산
+	    Map<String, Object> paginationInfo = boardservice.getPaginationInfo(curPage, listSize, totalCount); // 페이징 정보 계산
+
+	    List<BoardBoard> searchResults = boardservice.BoardList(searchType, search, stDate, endDate, curPage, listSize); // 검색 결과 조회
+
+	    model.addAttribute("boardList", searchResults); // 검색 결과
+	    model.addAttribute("paginationInfo", paginationInfo); // 페이징 정보
+
+	    return "board/searchList"; // 검색 결과를 보여줄 뷰
+	}
+	
+	
 
 
 	@GetMapping("/insert")
@@ -53,7 +74,7 @@ public class BoardController {
 	@PostMapping("/insert")
 	public String BoardPostInsert(BoardBoard board) {
 		boardservice.BoardInsert(board);
-		return "redirect:/board/listlist";
+		return "redirect:/board/list";
 		
 	}
 	
@@ -61,7 +82,7 @@ public class BoardController {
 	@PostMapping("/{seq}")
 	public String BoardDelete(@PathVariable("seq")int BoardDelete) {
 		boardservice.BoardDelete(BoardDelete);
-		return "redirect:/board/listlist";
+		return "redirect:/board/list";
 		
 	}
 	
@@ -79,7 +100,7 @@ public class BoardController {
 	@PostMapping("/update")
 	public String UpdateBoard(BoardBoard board) {
 		boardservice.UpdateBoard(board);
-		return "redirect:/board/listlist";
+		return "redirect:/board/list";
 	}
 	
 
