@@ -6,57 +6,44 @@
 <head>
 <meta charset="UTF-8">
 <title>Insert title here</title>
-<script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+
 <script>
-$(function() {
-    // 검색 버튼 클릭 이벤트
-    $("#schBtn").click(function(event) {
-        event.preventDefault();
-        loadSearchResults($("#searchFrm").serialize());
-    });
-
-    // 페이징 링크 클릭 이벤트
-    $(document).on("click", ".page-link", function(event) {
-        event.preventDefault();
-        var query = $(this).attr("href").split('?')[1]; // URL에서 쿼리 스트링 추출
-        loadSearchResults(query);
-    });
-
-    // 검색 결과 로드 함수
-    function loadSearchResults(query) {
-        $.ajax({
-            type: "GET",
-            url: "/board/searchList?" + query,
-            success: function(data) {
-                console.log("AJAX 요청 성공:", data);
-                $("#listFrm").html(data);
-            },
-            error: function(xhr, status, error) {
-                console.error("AJAX 요청 실패:", error);
-            }
-        });
-    }
-});
+	$(function() {
+		$("#schBtn").click(function(event) {
+			event.preventDefault(); // 기본 폼 제출 방지
+			$.ajax({
+				type : "GET",
+				url : "/board/searchList", // 검색 처리를 위한 서버의 URL
+				data : $("#searchFrm").serialize(), // 폼 데이터 직렬화
+				success : function(data) {
+					// 서버로부터 받은 데이터로 테이블 내용 업데이트
+					$("#listFrm").html(data);
+				},
+				error : function(xhr, status, error) {
+					alert("An error occurred: " + xhr.status + " " + error);
+				}
+			});
+		});
+	});
 </script>
 
 </head>
 <body>
 
-	<form name="searchFrm" id="searchFrm">
+	<form id="searchFrm" action="/board/list" method="get">
 		<select name="searchType">
 			<option value="all">선택</option>
 			<option value="name">이름</option>
 			<option value="title">제목</option>
 			<option value="titleContent">제목+내용</option>
 		</select> <input type="search" name="search">
-		<button type="button" id="schBtn">검색</button>
+		<button type="submit">검색</button>
 		<input type="date" name="stDate" id="stDate"> ~ <input
 			type="date" name="endDate" id="endDate">
 	</form>
 
 	<a href="/board/insert">글쓰기</a>
-	<form name="listFrm" id="listFrm">
-		
+	<form id="listFrm">
 		<table border="1">
 			<thead>
 				<tr>
@@ -73,6 +60,7 @@ $(function() {
 				</tr>
 			</thead>
 			<tbody>
+				<!-- AJAX를 통해 업데이트 될 검색 결과 -->
 				<c:forEach var="boardStudy" items="${boardList}">
 					<tr>
 						<td>${boardStudy.seq}</td>
@@ -95,18 +83,18 @@ $(function() {
 		</table>
 		<div>
 			<c:if test="${!empty paginationInfo}">
-				<a href="/board/list?curPage=1" class="page-link">처음</a>
+				<a href="/board/list?curPage=1">처음</a>
 				<c:if test="${paginationInfo.prevPage > 1}">
-					<a href="/board/list?curPage=${paginationInfo.prevPage}" class="page-link">이전</a>
+					<a href="/board/list?curPage=${paginationInfo.prevPage}">이전</a>
 				</c:if>
 				<c:forEach begin="${paginationInfo.blockBegin}"
 					end="${paginationInfo.blockEnd}" var="pageNum">
-					<a href="/board/list?curPage=${pageNum}"class="page-link">${pageNum}</a>
+					<a href="/board/list?curPage=${pageNum}">${pageNum}</a>
 				</c:forEach>
 				<c:if test="${paginationInfo.nextPage < paginationInfo.totalPage}">
-					<a href="/board/list?curPage=${paginationInfo.nextPage}"class="page-link">다음</a>
+					<a href="/board/list?curPage=${paginationInfo.nextPage}">다음</a>
 				</c:if>
-				<a href="/board/list?curPage=${paginationInfo.totalPage}" class="page-link">마지막</a>
+				<a href="/board/list?curPage=${paginationInfo.totalPage}">마지막</a>
 			</c:if>
 		</div>
 	</form>

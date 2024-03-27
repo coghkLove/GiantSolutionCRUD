@@ -40,17 +40,17 @@
 		</table>
 		<div>
 			<c:if test="${!empty paginationInfo}">
-				<a href="/board/list?curPage=1" class="page-link">처음</a>
+				<a href="/board/list?curPage=1">처음</a>
 				<c:if test="${paginationInfo.prevPage > 1}">
-					<a href="/board/list?curPage=${paginationInfo.prevPage}" class="page-link">이전</a>
+					<a href="/board/list?curPage=${paginationInfo.prevPage}">이전</a>
 				</c:if>
 				<c:forEach begin="${paginationInfo.blockBegin}"
 					end="${paginationInfo.blockEnd}" var="pageNum">
-					<a href="/board/list?curPage=${pageNum}"class="page-link">${pageNum}</a>
+					<a href="/board/list?curPage=${pageNum}">${pageNum}</a>
 				</c:forEach>
 				<c:if test="${paginationInfo.nextPage < paginationInfo.totalPage}">
-					<a href="/board/list?curPage=${paginationInfo.nextPage}"class="page-link">다음</a>
+					<a href="/board/list?curPage=${paginationInfo.nextPage}">다음</a>
 				</c:if>
-				<a href="/board/list?curPage=${paginationInfo.totalPage}" class="page-link">마지막</a>
+				<a href="/board/list?curPage=${paginationInfo.totalPage}">마지막</a>
 			</c:if>
 		</div>
