@@ -4,13 +4,13 @@ import java.util.List;
 import java.util.Map;
 
 import org.springframework.stereotype.Controller;
-import org.springframework.transaction.annotation.Transactional;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.multipart.MultipartFile;
 
 import com.ch.board.dto.BoardBoard;
 import com.ch.board.service.BoardService;
@@ -77,6 +77,16 @@ public class BoardController {
 		return "redirect:/board/list";
 		
 	}
+	
+//	@PostMapping("insert")
+//	public String BoardPostInsert(BoardBoard board, @RequestParam("file") MultipartFile file ) {
+//		if(!file.isEmpty()) {
+//			String fileName= file.getOriginalFilename();
+//			String savePath = "C:\\Users\\Chaehwa\\Desktop\\사진저장공간";
+//		}
+//	}
+//	
+	
 	
 	
 	@PostMapping("/{seq}")

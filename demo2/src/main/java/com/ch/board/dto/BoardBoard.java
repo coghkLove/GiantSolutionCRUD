@@ -22,5 +22,7 @@ public class BoardBoard {
 	private Date uptDate;
 	private String viewCnt;
 	private String useYn;
+	private String fileName; 
+	private String filePath; // 파일이 저장된 경로
 
 }

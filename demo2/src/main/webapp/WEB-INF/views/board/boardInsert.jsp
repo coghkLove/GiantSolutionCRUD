@@ -50,22 +50,32 @@
 <body>
 	<form name="frm" id="frm">
 		작성자: <input type="text" name="memName" id="name" value="${boardview.memName}"><br>
+		
 		아이디: <input type="text" name="memId" id="id" value="${boardview.memId}"><br>
 
 		제목: <input type="text" name="boardSubject" id="subject"
 			value="${boardview.boardSubject}"><br> 
+			
 		내용:<br>
-		<textarea rows="10" cols="40" name="boardContent" id="content">${boardview.boardContent}</textarea>
-		<br>
-		<c:choose>
-			<c:when test="${empty boardview}">
+		<textarea rows="10" cols="40" name="boardContent" id="content">${boardview.boardContent}</textarea><br>
+		
+		사진첨부 : <input type="file" name="file" id="file"><br> 
+		
+		
+		<c:choose> 
+		
+			<c:when test="${empty boardview}"> <!--boardview 객체가 비어있거나 존재하지 않는 경우 등록 버튼을 보여짐  -->
 				<input type="button" name="regBtn" id="regBtn" value="등록">
-			</c:when>
-			<c:otherwise>
+			</c:when> 
+			
+			<c:otherwise> <!--기존의 글을 수정하는 상황일 때 수정버튼과 삭제 버튼을 보여줌  -->
 				<input type="button" name="uptBtn" id="uptBtn" value="수정">
 				<button type="button" id="deleteBtn" data-seq="${boardview.seq}">삭제</button>
 			</c:otherwise>
+			
 		</c:choose>
+		
+		
 	</form>
 </body>
 </html>
