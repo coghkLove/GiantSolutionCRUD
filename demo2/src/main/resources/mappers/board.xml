@@ -31,12 +31,14 @@
 			<when test="searchType == 'titleContent'">
 				and (
 				BOARD_SUBJECT like '%'||#{search}||'%'
-				or BOARD_CONTENT like '%'||#{search}||'%'
+				or
+				BOARD_CONTENT like '%'||#{search}||'%'
 				)
 			</when>
 		</choose>
 		<if test="stDate != null and stDate != ''">
-			and to_char(reg_date, 'yyyy-MM-dd') between #{stDate} and #{endDate}
+			and to_char(reg_date, 'yyyy-MM-dd') between #{stDate} and
+			#{endDate}
 		</if>
 	</sql>
 
@@ -57,7 +59,8 @@
 		USEYN
 		FROM (
 		SELECT
-		ROW_NUMBER() OVER (ORDER BY REG_DATE DESC, SEQ DESC) AS RNUM,
+		ROW_NUMBER() OVER (ORDER BY
+		REG_DATE DESC, SEQ DESC) AS RNUM,
 		SEQ,
 		MEM_NAME,
 		MEM_ID,
@@ -68,7 +71,8 @@
 		VIEW_CNT,
 		USEYN
 		FROM BOARD_STUDY
-		WHERE 1=1
+		WHERE
+		1=1
 		<include refid="searchSql" />
 		) WHERE RNUM BETWEEN #{startRow} AND #{endRow}
 	</select>
@@ -105,6 +109,19 @@
 		SYSTIMESTAMP,
 		'0',
 		'Y'
+		)
+	</insert>
+
+	<insert id="fileInsert" parameterType="map">
+		insert into file_study_table
+		(file_seq, real_name, save_name, reg_date, SAVE_PATH, list_seq)
+		values (
+		(select nvl(max(file_seq), 0) + 1 from file_study_table),
+		#{realName},
+		#{saveName},
+		sysdate,
+		#{filePath},
+		#{listSeq}
 		)
 	</insert>
 

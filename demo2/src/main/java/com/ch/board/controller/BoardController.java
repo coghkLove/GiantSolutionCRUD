@@ -1,5 +1,8 @@
 package com.ch.board.controller;
 
+import java.io.File;
+import java.io.IOException;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -13,6 +16,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.ch.board.dto.BoardBoard;
+import com.ch.board.mapper.BoardMapper;
 import com.ch.board.service.BoardService;
 
 import lombok.RequiredArgsConstructor;
@@ -23,6 +27,7 @@ import lombok.RequiredArgsConstructor;
 public class BoardController {
 	
 	private final BoardService boardservice;
+	private final BoardMapper boardMapper;
 	
 	@GetMapping("/list")
 	public String boardList(
@@ -66,26 +71,51 @@ public class BoardController {
 	
 
 
+	private static final String FILE_PATH = "C:/Users/user/Desktop/img/";
+	
+	
 	@GetMapping("/insert")
 	public String BoardInsert() {
 		return "board/boardInsert";
 	}
 	
-	@PostMapping("/insert")
-	public String BoardPostInsert(BoardBoard board) {
-		boardservice.BoardInsert(board);
-		return "redirect:/board/list";
-		
-	}
+	 @PostMapping("/insert")
+	    public String BoardPostInsert(BoardBoard board, @RequestParam("file") MultipartFile[] files) {
+		 boardservice.BoardInsert(board);
+
+	        for (MultipartFile file : files) {
+	            if (!file.isEmpty()) {
+	                String fileName = file.getOriginalFilename();
+	                String saveName = System.currentTimeMillis() + "_" + fileName;
+	                String savePath = FILE_PATH + saveName;
+	                
+	                File saveDirectory = new File(FILE_PATH);
+	                if (!saveDirectory.exists()) {
+	                    saveDirectory.mkdirs();
+	                }
+	                
+	                File saveFile = new File(savePath);
+	                try {
+	                    file.transferTo(saveFile);
+	                    
+	                    Map<String, Object> fileData = new HashMap<>();
+	                    fileData.put("realName", fileName);
+	                    fileData.put("saveName", saveName);
+	                    fileData.put("filePath", FILE_PATH);
+	                    fileData.put("listSeq", board.getSeq());
+	                    
+	                    boardMapper.fileInsert(fileData);
+	                } catch (IOException e) {
+	                    e.printStackTrace();
+	     
+	                }
+	            }
+	        }
+
+	        return "redirect:/board/list";
+	    }
 	
-//	@PostMapping("insert")
-//	public String BoardPostInsert(BoardBoard board, @RequestParam("file") MultipartFile file ) {
-//		if(!file.isEmpty()) {
-//			String fileName= file.getOriginalFilename();
-//			String savePath = "C:\\Users\\Chaehwa\\Desktop\\사진저장공간";
-//		}
-//	}
-//	
+
 	
 	
 	

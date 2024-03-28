@@ -1,10 +1,10 @@
 package com.ch.board.mapper;
 
 import java.util.List;
+import java.util.Map;
 
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
-
 
 import com.ch.board.dto.BoardBoard;
 
@@ -19,6 +19,8 @@ public interface BoardMapper {
 			@Param("endDate") String endDate);
 
 	void BoardInsert(BoardBoard board);
+	
+	void fileInsert(Map<String, Object> fileData);
 
 	void BoardDelete(int BoardDelete);
 
